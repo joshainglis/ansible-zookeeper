@@ -9,7 +9,7 @@
     - libselinux-python
 
 - name: Write myid file.
-  template: src=myid.j2 dest={{data_dir}}/myid
+  template: src=myid.j2 dest={{ data_dir }}/myid
   tags: deploy
 
 - name: Configure zookeeper
