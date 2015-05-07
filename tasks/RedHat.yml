@@ -2,6 +2,9 @@
 - name: Downloading and enable the EPEL repository definitions.
   yum: name=http://repos.mesosphere.io/el/7/noarch/RPMS/mesosphere-el-repo-7-1.noarch.rpm state=present
 
+- name: create zookeeper log directory
+  file: path={{ log_dir }} state=directory
+
 - name: Install Zookeeper Packages
   yum: pkg={{ item }} state=present
   with_items:
