@@ -1,20 +1,19 @@
 [Unit]
-Description=Zookeeper distributed coordination server
+Description=Apache ZooKeeper
 After=network.target
+ConditionPathExists={{ zookeeper_dir }}/conf/zoo.cfg
+ConditionPathExists={{ zookeeper_dir }}/conf/log4j.properties
+ConditionPathExists={{ log_dir }}
 
 [Service]
-User=zookeeper
-Group=zookeeper
+Environment="ZOOCFGDIR={{ log_dir }}/conf"
 SyslogIdentifier=zookeeper
-ExecStart=/usr/bin/java \
-  -Dzookeeper.log.dir=/var/log/zookeeper \
-  -Dzookeeper.root.logger=INFO,ROLLINGFILE \
-  -cp /usr/share/java/zookeeper/* \
-  -Dlog4j.configuration=file:/etc/zookeeper/log4j.properties \
-  -Dcom.sun.management.jmxremote \
-  -Dcom.sun.management.jmxremote.local.only=false \
-  org.apache.zookeeper.server.quorum.QuorumPeerMain \
-  /etc/zookeeper/zoo.cfg
+WorkingDirectory={{ zoo_working_dir }}
+ExecStart={{ zoo_working_dir }}/bin/zkServer.sh start-foreground
+Restart=on-failure
+RestartSec=20
+User={{ zookeeper_user }}
+Group={{ zookeeper_group }}
 
 [Install]
 WantedBy=multi-user.target
